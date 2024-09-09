@@ -2,8 +2,8 @@
 
 all: renderer
 
-renderer: renderer.c
-	g++ -o renderer.exe renderer.c
+renderer: renderer.cpp
+	g++ -o renderer.exe renderer.cpp
 
 
 clean:
