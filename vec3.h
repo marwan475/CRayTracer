@@ -36,6 +36,16 @@ class vec3{
     double z(){
       return vec[2];
     }
+
+    // add vector
+    
+    // scalar multiply vector
+
+    // subtract vector
+    
+    // divide vector
+
+    // length/magnitude of vector
 };
 
 #endif
