@@ -20,6 +20,9 @@ int main(){
 
   // formating rgb
   for ( j = 0; j < height;j++){
+    // progress tracker
+    fprintf(stderr,"\rRendering %f percent complete",(double(j)/double(height))*100);
+    fflush(stderr);
     for (i = 0; i < width;i++){
       r = i;
       g = j;
@@ -29,6 +32,8 @@ int main(){
       printf("%d %d %d\n",r,g,b);
     } 
   }
+
+  fprintf(stderr,"\nComplete");
 
 
   return 0;
