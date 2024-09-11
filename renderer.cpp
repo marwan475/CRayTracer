@@ -3,7 +3,7 @@
 #include "vec3.h"
 #include "ray.h"
 
-vec3 ray_color(vec3& v)
+vec3 ray_color(ray r)
 {
   return vec3(0,0,0);
 }
@@ -14,7 +14,10 @@ int main(){
   int i;
   int j;
 
-  vec3 v;
+  vec3 center;
+  vec3 ray_direction;
+
+  vec3 c;
 
   // image dimensions
   double aspect_ratio = 16.0/9.0;
@@ -53,8 +56,13 @@ int main(){
     fprintf(stderr,"\rRendering %f percent complete",(double(j)/double(height))*100);
     fflush(stderr);
     for (i = 0; i < width;i++){
-      v = vec3(255.99*(double(i)/width),255.99*(double(j)/height),0);
-      printVector(stdout,v);
+      center = addVectors(pixel_location,addVectors(SmultiVector(i,delta_u),SmultiVector(j,delta_v)));
+      ray_direction = subtractVectors(center,ccenter);
+
+      ray r = ray(ccenter,ray_direction);
+
+      c = ray_color(r);
+
       //rgb values of each pixel in ppm format
     } 
   }
