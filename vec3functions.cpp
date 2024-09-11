@@ -3,7 +3,7 @@
 // Prints out vector [x,y,z]
 void printVector(FILE *stream,vec3& v)
 {
-  fprintf(stream,"[%f,%f,%f]",v.x(),v.y(),v.z());
+  fprintf(stream,"%f %f %f\n",v.x(),v.y(),v.z());
 }
 
 // adds 2 vectors and returns a new one
@@ -55,5 +55,3 @@ vec3 unitVector(vec3 v)
 {
   return SdivideVector(v.length(),v);
 }
-
-

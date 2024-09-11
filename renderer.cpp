@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "vec3.h"
 
 // main function for renderer
 int main(){
@@ -8,9 +9,7 @@ int main(){
   int j;
 
   // rgb values;
-  int r;
-  int g;
-  int b;
+  vec3 v;
 
   int width = 256;
   int height = 256;
@@ -24,12 +23,9 @@ int main(){
     fprintf(stderr,"\rRendering %f percent complete",(double(j)/double(height))*100);
     fflush(stderr);
     for (i = 0; i < width;i++){
-      r = i;
-      g = j;
-      b = (i + j)/2;
-
+      v = vec3(255.99*(double(i)/width),255.99*(double(j)/height),0);
+      printVector(stdout,v);
       //rgb values of each pixel in ppm format
-      printf("%d %d %d\n",r,g,b);
     } 
   }
 
