@@ -7,7 +7,7 @@ class ray {
   public:
     ray(vec3& origin,vec3& direction)
     {
-      oirgin = SmultiVector(1,origin);
+      origin = SmultiVector(1,origin);
       direction = SmultiVector(1,direction);
     }
 
@@ -33,6 +33,6 @@ class ray {
     // direction of ray [x,y,z]
     vec3 direction;
 
-}
+};
 
 #endif

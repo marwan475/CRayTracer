@@ -39,7 +39,7 @@ class vec3{
     }
 
     // add vector
-    void add_vector(vec3& v){
+    void add_vector(vec3 v){
       vec[0] += v.x();
       vec[1] += v.y();
       vec[2] += v.z();
@@ -53,7 +53,7 @@ class vec3{
     }
 
     // subtract vector
-    void subtract_vector(vec3& v){
+    void subtract_vector(vec3 v){
       vec[0] -= v.x();
       vec[1] -= v.y();
       vec[2] -= v.z();
@@ -72,14 +72,14 @@ class vec3{
     }
 };
 
-void printVector(FILE *stream,vec3& v);
-vec3 addVectors(vec3& v1,vec3& v2);
-vec3 subtractVectors(vec3& v1,vec3& v2);
-vec3 multiVectors(vec3& v1,vec3& v2);
-vec3 SmultiVector(double s,vec3& v);
-vec3 SdivideVector(double s,vec3& v);
-double dot(vec3& v1,vec3& v2);
-vec3 crossproduct(vec3& v1, vec3& v2);
+void printVector(FILE *stream,vec3 v);
+vec3 addVectors(vec3 v1,vec3 v2);
+vec3 subtractVectors(vec3 v1,vec3 v2);
+vec3 multiVectors(vec3 v1,vec3 v2);
+vec3 SmultiVector(double s,vec3 v);
+vec3 SdivideVector(double s,vec3 v);
+double dot(vec3 v1,vec3 v2);
+vec3 crossproduct(vec3 v1, vec3 v2);
 vec3 unitVector(vec3 v);
 
 #endif

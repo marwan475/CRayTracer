@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "vec3.h"
+#include "ray.h"
+
+vec3 ray_color(vec3& v)
+{
+  return vec3(0,0,0);
+}
 
 // main function for renderer
 int main(){
@@ -8,11 +14,35 @@ int main(){
   int i;
   int j;
 
-  // rgb values;
   vec3 v;
 
-  int width = 256;
-  int height = 256;
+  // image dimensions
+  double aspect_ratio = 16.0/9.0;
+
+  int width = 400;
+  int height = int(width/aspect_ratio);
+
+  // Camera
+  double viewport_h = 2.0;
+  double viewport_w = viewport_h*(double(width)/double(height));
+
+  double focal_length = 1.0;
+
+  vec3 ccenter = vec3(0,0,0);
+
+  // viewport vectors
+  vec3 viewport_u = vec3(viewport_w,0,0);
+  vec3 viewport_v = vec3(0,-viewport_h,0);
+
+  // delta vectors
+  vec3 delta_u = SdivideVector(width,viewport_u);
+  vec3 delta_v = SdivideVector(height,viewport_v);
+
+  // finding view port upper left pixel on image
+
+  vec3 vp_upperleft = subtractVectors(subtractVectors(subtractVectors(ccenter,vec3(0,0,focal_length)),SdivideVector(2,viewport_u)),SdivideVector(2,viewport_v));  
+
+  vec3 pixel_location = addVectors(vp_upperleft,SmultiVector(0.5,addVectors(delta_u,delta_v)));
 
   // ppm file header
   printf("P3\n%d %d\n255\n",width,height);
