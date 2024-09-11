@@ -1,4 +1,4 @@
-#include<"vec3.h".
+#include "vec3.h"
 
 // Prints out vector [x,y,z]
 void printVector(FILE *stream,vec3& v)
@@ -31,7 +31,7 @@ vec3 SmultiVector(double s,vec3& v)
 }
 
 // scalar divides a vector and returns a new one
-vec3 SdivdeVector(double s,vec3& v)
+vec3 SdivideVector(double s,vec3& v)
 {
   return vec3(v.x()/s,v.y()/s,v.z()/s);
 }

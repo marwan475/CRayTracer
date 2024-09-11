@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 // 3d vector class
 class vec3{
@@ -39,36 +40,46 @@ class vec3{
 
     // add vector
     void add_vector(vec3& v){
-      vec3[0] += v.e[0];
-      vec3[1] += v.e[1];
-      vec3[2] += v.e[2];
+      vec[0] += v.x();
+      vec[1] += v.y();
+      vec[2] += v.z();
     }
     
     // scalar multiply vector
     void scalar_multiply(double n){
-      vec3[0] *= n;
-      vec3[1] *= n;
-      vec3[2] *= n;
+      vec[0] *= n;
+      vec[1] *= n;
+      vec[2] *= n;
     }
 
     // subtract vector
     void subtract_vector(vec3& v){
-      vec3[0] -= v.e[0];
-      vec3[1] -= v.e[1];
-      vec3[2] -= v.e[2];
+      vec[0] -= v.x();
+      vec[1] -= v.y();
+      vec[2] -= v.z();
     }
 
     // divide vector
     void scalar_divide(double n){
-      vec3[0] /= n;
-      vec3[1] /= n;
-      vec3[2] /= n;
+      vec[0] /= n;
+      vec[1] /= n;
+      vec[2] /= n;
     }
 
     // length/magnitude of vector
     double length(){
-      return sqrt(vec3[0]*vec3[0] + vec3[1]*vec3[1] + vec3[2]*vec3[2]);
+      return sqrt(vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2]);
     }
 };
+
+void printVector(FILE *stream,vec3& v);
+vec3 addVectors(vec3& v1,vec3& v2);
+vec3 subtractVectors(vec3& v1,vec3& v2);
+vec3 multiVectors(vec3& v1,vec3& v2);
+vec3 SmultiVector(double s,vec3& v);
+vec3 SdivideVector(double s,vec3& v);
+double dot(vec3& v1,vec3& v2);
+vec3 crossproduct(vec3& v1, vec3& v2);
+vec3 unitVector(vec3 v);
 
 #endif
