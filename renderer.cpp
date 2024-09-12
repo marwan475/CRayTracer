@@ -28,23 +28,26 @@ int main(){
   int height = int(width/aspect_ratio);
 
   // Camera
+
+  // what the camera sees
   double viewport_h = 2.0;
   double viewport_w = viewport_h*(double(width)/double(height));
 
+  // distance camera to viewport
   double focal_length = 1.0;
 
+  // camera location
   vec3 ccenter = vec3(0,0,0);
 
   // viewport vectors
-  vec3 viewport_u = vec3(viewport_w,0,0);
-  vec3 viewport_v = vec3(0,-viewport_h,0);
+  vec3 viewport_u = vec3(viewport_w,0,0); // horizontal vector of viewport
+  vec3 viewport_v = vec3(0,-viewport_h,0); // negative vertical vector of viewport
 
   // delta vectors
-  vec3 delta_u = SdivideVector(width,viewport_u);
-  vec3 delta_v = SdivideVector(height,viewport_v);
+  vec3 delta_u = SdivideVector(width,viewport_u); // change between pixels horizotanlly
+  vec3 delta_v = SdivideVector(height,viewport_v);// change between pixels vertically
 
-  // finding view port upper left pixel on image
-
+  // finding upper left pixel location, as image is rendered from the (0,0) location
   vec3 vp_upperleft = subtractVectors(subtractVectors(subtractVectors(ccenter,vec3(0,0,focal_length)),SdivideVector(2,viewport_u)),SdivideVector(2,viewport_v));  
 
   vec3 pixel_location = addVectors(vp_upperleft,SmultiVector(0.5,addVectors(delta_u,delta_v)));
@@ -58,11 +61,16 @@ int main(){
     fprintf(stderr,"\rRendering %f percent complete",(double(j)/double(height))*100);
     fflush(stderr);
     for (i = 0; i < width;i++){
+      
+      // curent pixel	    
       center = addVectors(pixel_location,addVectors(SmultiVector(i,delta_u),SmultiVector(j,delta_v)));
+      // ray diriciton to the current pixel
       ray_direction = subtractVectors(center,ccenter);
 
+      // current ray
       ray r = ray(ccenter,ray_direction);
 
+      // color from current ray
       c = ray_color(r);
 
       //rgb values of each pixel in ppm format
