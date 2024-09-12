@@ -7,31 +7,31 @@ class ray {
   public:
     ray(vec3& origin,vec3& direction)
     {
-      origin = SmultiVector(1,origin);
-      direction = SmultiVector(1,direction);
+      orig = SmultiVector(1,origin);
+      dire = SmultiVector(1,direction);
     }
 
     vec3 org()
     {
-      return origin;
+      return orig;
     }
 
     vec3 dir()
     {
-      return direction;
+      return dire;
     }
 
     vec3 get(double n)
     {
-      return addVectors(origin,SmultiVector(n,direction));
+      return addVectors(orig,SmultiVector(n,dire));
     }
 
   private:
     // orgin point of ray [x,y,z]
-    vec3 origin;
+    vec3 orig;
     
     // direction of ray [x,y,z]
-    vec3 direction;
+    vec3 dire;
 
 };
 
