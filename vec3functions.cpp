@@ -3,7 +3,7 @@
 // Prints out vector [x,y,z]
 void printVector(FILE *stream,vec3 v)
 {
-  fprintf(stream,"%f %f %f\n",v.x(),v.y(),v.z());
+  fprintf(stream,"%lf %lf %lf\n",v.x(),v.y(),v.z());
 }
 
 // adds 2 vectors and returns a new one

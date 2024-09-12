@@ -5,7 +5,9 @@
 
 vec3 ray_color(ray r)
 {
-  return vec3(0,0,0);
+  vec3 ud = unitVector(r.dir());
+  double a = 0.5*(ud.y() + 1.0);
+  return SmultiVector(255.99,addVectors(SmultiVector(1.0-a,vec3(1.0,1.0,1.0)),SmultiVector(a,vec3(0.5,0.7,1.0))));
 }
 
 // main function for renderer
@@ -64,6 +66,7 @@ int main(){
       c = ray_color(r);
 
       //rgb values of each pixel in ppm format
+      printVector(stdout,c);
     } 
   }
 
