@@ -4,6 +4,11 @@
 #include "vec3.h"
 #include "ray.h"
 
+#include <vector>
+#include <memory>
+
+using namespace std
+
 typedef struct {
   
   vec3 point;
@@ -22,7 +27,45 @@ void set_face(ray r,vec3 normal,obj_record *record)
   else record->normalV = Smulti(-1,normal);
 }
 
-class Sphere {
+class obj {
+  public:
+    virutal obj() = default;
+
+    virtual bool contact(ray r,double tmin,double tmax,obj_record *record)
+    {
+      return false;
+    }
+}
+
+class obj_list : public obj {
+  public:
+    vector<shared_ptr<obj>> objects;
+
+    obj_list(){}
+    
+    void add(shared_ptr<obj> object) {objects.push_back(object);}
+
+    void clear() {objects.clear();}
+
+    bool contact(ray r,double tmin,double tmax,obj_record *record)
+    {
+      obj_record = rec;
+      bool cont = false;
+      double closest = tmax;
+
+      for ( auto o : objects) {
+        if (o->contact(r,tmin,closest,&rec)){
+	  cont = true;
+	  closest = rec.t;
+	  *record = rec;
+	}
+      } 
+
+      return cont;
+    }
+}
+
+class Sphere : public obj {
   public:
     Sphere(vec3 cent, double rad)
     {
