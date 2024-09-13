@@ -1,38 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits>
 #include "vec3.h"
 #include "ray.h"
-
-// checks if ray hits a sphere (sphere center,sphere radius,ray)
-double Sphere(vec3 Scenter,double radius,ray r)
-{
-
-  // Quadratic formula	
-  vec3 oc = subtractVectors(Scenter,r.org());
-  double a = dot(r.dir(),r.dir());
-  double b = dot(r.dir(),oc);
-  double c = dot(oc,oc) - (radius*radius);
-  double d = b*b - a*c;
-  
-  if (d < 0) return -1.0;
-  else return (b - sqrt(d))/a;
-}
+#include "objects.h"
 
 // determines color of pixel that ray hits
-vec3 ray_color(ray r)
+vec3 ray_color(ray r,obj_list scene)
 {
-  // checks if ray hits a sphere	
-  double a = Sphere(vec3(0,0,-1),0.5,r); 
-  if ( a > 0.0){
-    vec3 A = unitVector(addVectors(r.get(a),vec3(1,0,0)));
-    return SmultiVector(0.5,addVectors(A,vec3(1,1,1)));
-  }	
-
-  double b = Sphere(vec3(0,-100,-1),100,r);
-  if ( b > 0.0){
-    vec3 B = unitVector(addVectors(r.get(b),vec3(0,1,0)));
-    return SmultiVector(0.5,addVectors(B,vec3(1,1,1)));
+  obj_record rec;
+  if (scene.contact(r,0,numeric_limits<double>::infinity(),&rec)){
+    return SmultiVector(0.5,addVectors(rec.normalV,vec3(1,1,1)));
   }
+  
 
   // Ray hit background	
   vec3 ud = unitVector(r.dir());
@@ -50,6 +30,13 @@ int main(){
   vec3 ray_direction;
 
   vec3 c;
+
+  // scene creation
+  
+  obj_list scene;
+
+  scene.add(make_shared<Sphere>(vec3(0,0,-1), 0.5));
+  scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100));
 
   // image dimensions
   double aspect_ratio = 16.0/9.0;
@@ -101,7 +88,7 @@ int main(){
       ray r = ray(ccenter,ray_direction);
 
       // color from current ray
-      c = ray_color(r);
+      c = ray_color(r,scene);
 
       //rgb values of each pixel in ppm format
       printVector(stdout,SmultiVector(255.99,c));

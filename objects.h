@@ -7,7 +7,7 @@
 #include <vector>
 #include <memory>
 
-using namespace std
+using namespace std;
 
 typedef struct {
   
@@ -24,18 +24,15 @@ void set_face(ray r,vec3 normal,obj_record *record)
   record->face = dot(r.dir(),normal);
   
   if (record->face) record->normalV = normal;
-  else record->normalV = Smulti(-1,normal);
+  else record->normalV = SmultiVector(-1,normal);
 }
 
 class obj {
   public:
-    virutal obj() = default;
+    virtual ~obj() = default;
 
-    virtual bool contact(ray r,double tmin,double tmax,obj_record *record)
-    {
-      return false;
-    }
-}
+    virtual bool contact(ray r,double tmin,double tmax,obj_record *record) const = 0;
+};
 
 class obj_list : public obj {
   public:
@@ -47,9 +44,9 @@ class obj_list : public obj {
 
     void clear() {objects.clear();}
 
-    bool contact(ray r,double tmin,double tmax,obj_record *record)
+    bool contact(ray r,double tmin,double tmax,obj_record *record) const override
     {
-      obj_record = rec;
+      obj_record rec;
       bool cont = false;
       double closest = tmax;
 
@@ -63,7 +60,7 @@ class obj_list : public obj {
 
       return cont;
     }
-}
+};
 
 class Sphere : public obj {
   public:
@@ -73,7 +70,7 @@ class Sphere : public obj {
       radius = rad;
     }
 
-    bool contact(ray r, double tmin, double tmax,obj_record *record)
+    bool contact(ray r, double tmin, double tmax,obj_record *record) const override
     {
       // Quadratic formula	    
       vec3 oc = subtractVectors(Scenter,r.org());
@@ -85,15 +82,15 @@ class Sphere : public obj {
 
       if (d < 0) return false; // no real solutions
 
-      double r = (b - sd) / a; // root
-      if (r <= tmin || tmax <= r){
-        r = (b + sd) / a;
-	if ( r <= tmin || tmax <= r) return false;
+      double rt = (b - sd) / a; // root
+      if (rt <= tmin || tmax <= rt){
+        rt = (b + sd) / a;
+	if ( rt <= tmin || tmax <= rt) return false;
       } 
 
-      record->t = root;
-      record->point = r.get(r);
-      vec3 normal = sdivideVector(radius,subtratVectors(record->point,Scenter));
+      record->t = rt;
+      record->point = r.get(rt);
+      vec3 normal = SdivideVector(radius,subtractVectors(record->point,Scenter));
       set_face(r,normal,record);
 
       return true;
@@ -101,6 +98,6 @@ class Sphere : public obj {
   private:
     vec3 Scenter;
     double radius;
-}
+};
 
 #endif
