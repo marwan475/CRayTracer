@@ -6,30 +6,38 @@
 // checks if ray hits a sphere (sphere center,sphere radius,ray)
 double Sphere(vec3 Scenter,double radius,ray r)
 {
+
+  // Quadratic formula	
   vec3 oc = subtractVectors(Scenter,r.org());
   double a = dot(r.dir(),r.dir());
-  double b = -2.0*dot(r.dir(),oc);
+  double b = dot(r.dir(),oc);
   double c = dot(oc,oc) - (radius*radius);
-  double d = b*b -4*a*c;
+  double d = b*b - a*c;
   
   if (d < 0) return -1.0;
-  else return (-b - sqrt(d))/(2.0*a);
+  else return (b - sqrt(d))/a;
 }
 
 // determines color of pixel that ray hits
 vec3 ray_color(ray r)
 {
   // checks if ray hits a sphere	
-  double n = Sphere(vec3(0,0,-1),0.5,r); 
-  if ( n > 0.0){
-    vec3 N = unitVector(addVectors(r.get(n),vec3(1,0,0)));
-    return SmultiVector(0.5,addVectors(N,vec3(1,1,1)));
+  double a = Sphere(vec3(0,0,-1),0.5,r); 
+  if ( a > 0.0){
+    vec3 A = unitVector(addVectors(r.get(a),vec3(1,0,0)));
+    return SmultiVector(0.5,addVectors(A,vec3(1,1,1)));
   }	
+
+  double b = Sphere(vec3(0,-100,-1),100,r);
+  if ( b > 0.0){
+    vec3 B = unitVector(addVectors(r.get(b),vec3(0,1,0)));
+    return SmultiVector(0.5,addVectors(B,vec3(1,1,1)));
+  }
 
   // Ray hit background	
   vec3 ud = unitVector(r.dir());
-  double a = 0.7*(ud.y() + 1.0);
-  return addVectors(SmultiVector(1.0-a,vec3(1.0,1.0,1.0)),SmultiVector(a,vec3(1.0,0.7,0.5)));
+  double n = 0.7*(ud.y() + 1.0);
+  return addVectors(SmultiVector(1.0-n,vec3(1.0,1.0,1.0)),SmultiVector(n,vec3(1.0,0.7,0.5)));
 }
 
 // main function for renderer
