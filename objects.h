@@ -9,8 +9,18 @@ typedef struct {
   vec3 point;
   vec3 normalV;
   double t;
+  bool face;
 
 } obj_record;
+
+// sets the objects hit loaction record direction of normal vector
+void set_face(ray r,vec3 normal,obj_record *record)
+{
+  record->face = dot(r.dir(),normal);
+  
+  if (record->face) record->normalV = normal;
+  else record->normalV = Smulti(-1,normal);
+}
 
 class Sphere {
   public:
@@ -40,7 +50,8 @@ class Sphere {
 
       record->t = root;
       record->point = r.get(r);
-      record->normalV = SdivideVector(radius,subtractVectors(record->point,Scenter));
+      vec3 normal = sdivideVector(radius,subtratVectors(record->point,Scenter));
+      set_face(r,normal,record);
 
       return true;
     }
