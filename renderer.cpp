@@ -3,11 +3,27 @@
 #include "vec3.h"
 #include "ray.h"
 
+// checks if ray hits a sphere (sphere center,sphere radius,ray)
+bool Sphere(vec3 Scenter,double radius,ray r)
+{
+  vec3 oc = subtractVectors(Scenter,r.org());
+  double a = dot(r.dir(),r.dir());
+  double b = -2.0*dot(r.dir(),oc);
+  double c = dot(oc,oc) - (radius*radius);
+  double d = b*b -4*a*c;
+  return (d >= 0);
+}
+
+// determines color of pixel that ray hits
 vec3 ray_color(ray r)
 {
+  // checks if ray hits a sphere	
+  if (Sphere(vec3(0,0,-1),0.5,r)) return vec3(0,0,1);	
+
+  // Ray hit background	
   vec3 ud = unitVector(r.dir());
-  double a = 0.5*(ud.y() + 1.0);
-  return SmultiVector(255.99,addVectors(SmultiVector(1.0-a,vec3(1.0,1.0,1.0)),SmultiVector(a,vec3(0.5,0.7,1.0))));
+  double a = 0.7*(ud.y() + 1.0);
+  return addVectors(SmultiVector(1.0-a,vec3(1.0,1.0,1.0)),SmultiVector(a,vec3(1.0,0.7,0.5)));
 }
 
 // main function for renderer
@@ -74,7 +90,7 @@ int main(){
       c = ray_color(r);
 
       //rgb values of each pixel in ppm format
-      printVector(stdout,c);
+      printVector(stdout,SmultiVector(255.99,c));
     } 
   }
 
