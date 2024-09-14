@@ -24,6 +24,6 @@ class interval {
     bool surrounds(double x) const {
         return min < x && x < max;
     }
-}
+};
 
 #endif

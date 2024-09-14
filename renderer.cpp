@@ -9,7 +9,7 @@
 vec3 ray_color(ray r,obj_list scene)
 {
   obj_record rec;
-  if (scene.contact(r,0,numeric_limits<double>::infinity(),&rec)){
+  if (scene.contact(r,interval(0,numeric_limits<double>::infinity()),&rec)){
     return SmultiVector(0.5,addVectors(rec.normalV,vec3(1,1,1)));
   }
   
