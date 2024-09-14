@@ -39,7 +39,9 @@ class camera {
       int j;      
       vec3 center;
       vec3 ray_direction;
+      vec3 c;
 
+      // ppm header
       printf("P3\n%d %d\n255\n",width,height);
       
       for ( j = 0; j < height;j++){
@@ -66,6 +68,7 @@ class camera {
      fprintf(stderr,"\nComplete");
     }
 
+    // determines color of pixel that ray hits
     vec3 ray_color(ray r,obj_list scene)
     {
       obj_record rec;
@@ -86,12 +89,16 @@ class camera {
     int height;
     double viewport_h;
     double viewport_w;
-    double focal_length;
-    vec3 ccenter;
-    vec3 viewport_u;
+    double focal_length; // distance from camera to viewport
+    vec3 ccenter; // camera center
+    vec3 viewport_u; 
     vec3 viewport_v;
+
+    // rate of change between pixels
     vec3 delta_u;
     vec3 delta_v;
+
+    // upper left pixel location
     vec3 vp_upperleft;
     vec3 pixel_location;
 
