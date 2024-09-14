@@ -3,7 +3,6 @@
 
 #include "vec3.h"
 #include "ray.h"
-#include "interval.h"
 
 #include <vector>
 #include <memory>
@@ -32,7 +31,7 @@ class obj {
   public:
     virtual ~obj() = default;
 
-    virtual bool contact(ray r,interval trange,obj_record *record) const = 0;
+    virtual bool contact(ray r,double tmin,double tmax,obj_record *record) const = 0;
 };
 
 class obj_list : public obj {
@@ -45,14 +44,14 @@ class obj_list : public obj {
 
     void clear() {objects.clear();}
 
-    bool contact(ray r,interval trange,obj_record *record) const override
+    bool contact(ray r,double tmin,double tmax,obj_record *record) const override
     {
       obj_record rec;
       bool cont = false;
-      double closest = trange.max;
+      double closest = tmax;
 
       for ( auto o : objects) {
-        if (o->contact(r,interval(trange.min,closest),&rec)){
+        if (o->contact(r,tmin,closest,&rec)){
 	  cont = true;
 	  closest = rec.t;
 	  *record = rec;
@@ -71,7 +70,7 @@ class Sphere : public obj {
       radius = rad;
     }
 
-    bool contact(ray r,interval trange,obj_record *record) const override
+    bool contact(ray r, double tmin, double tmax,obj_record *record) const override
     {
       // Quadratic formula	    
       vec3 oc = subtractVectors(Scenter,r.org());
@@ -84,9 +83,9 @@ class Sphere : public obj {
       if (d < 0) return false; // no real solutions
 
       double rt = (b - sd) / a; // root
-      if (trange.surrounds(rt)){
+      if (rt <= tmin || tmax <= rt){
         rt = (b + sd) / a;
-	if (!trange.surrounds(rt)) return false;
+	if ( rt <= tmin || tmax <= rt) return false;
       } 
 
       record->t = rt;
