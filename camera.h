@@ -4,6 +4,8 @@
 #include <limits>
 #include "objects.h"
 
+using std::numeric_limits;
+
 class camera {
   public:
 
