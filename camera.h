@@ -3,13 +3,14 @@
 
 #include <limits>
 #include "objects.h"
+#include <windows.h>
 
 using std::numeric_limits;
 
 class camera {
   public:
 
-    camera(double ar, int w,double vh,double fl,vec3 cc)
+    camera(HWND hwnd,double ar, int w,double vh,double fl,vec3 cc)
     {
       width = w;
       aspect_ratio = ar;
@@ -32,6 +33,8 @@ class camera {
 
       pixel_location = addVectors(vp_upperleft,SmultiVector(0.5,addVectors(delta_u,delta_v)));
 
+      hWindow = hwnd;
+
     }
 
 
@@ -43,8 +46,9 @@ class camera {
       vec3 ray_direction;
       vec3 c;
 
-      // ppm header
-      printf("P3\n%d %d\n255\n",width,height);
+      COLORREF rgb;
+
+      HDC hWdc = GetDC(hWindow);
       
       for ( j = 0; j < height;j++){
         // progress tracker
@@ -62,9 +66,11 @@ class camera {
 
           // color from current ray
           c = ray_color(r,scene);
+	  c = SmultiVector(255,c);
 
           //rgb values of each pixel in ppm format
-          printVector(stdout,SmultiVector(255.99,c));
+          rgb = RGB(c.x(),c.y(),c.z());
+	  SetPixel(hWdc,i,j,rgb);
        }
      }
      fprintf(stderr,"\nComplete");
@@ -103,6 +109,9 @@ class camera {
     // upper left pixel location
     vec3 vp_upperleft;
     vec3 pixel_location;
+
+    // handle to window
+    HWND hWindow;
 
 };
 

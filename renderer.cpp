@@ -9,6 +9,19 @@ const char WindowClassName[] = "Window";
 
 LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 {
+  switch(msg){
+	  
+      case WM_CLOSE:
+	      DestroyWindow(hwnd);
+	      break;
+      case WM_DESTROY:
+	      PostQuitMessage(0);
+	      break;
+      default:
+	      return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+
+
   return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
@@ -16,7 +29,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
   // window creation
-  int rtrc; 
+  int rtrc;
+  MSG msg; 
 
   WNDCLASSEX wc    = {0};  
   wc.cbSize        = sizeof(wc);
@@ -36,6 +50,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     return 0;
   }
 
+  int width = 1000;
+  double aspect_ratio = 16.0/9.0;
+  double viewport_h = 2.0;
+  double focal_length = 1.0;
+      
+  int height = int(width/aspect_ratio);
+
   HWND hWindow = CreateWindowEx(
 		    WS_EX_CLIENTEDGE, 
 		    WindowClassName, // name of our window class
@@ -43,8 +64,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		    WS_OVERLAPPEDWINDOW, 
 		    CW_USEDEFAULT, // X cord of window
 		    CW_USEDEFAULT, // Y cor dof window
-		    1600, //width
-		    1000, //height
+		    width + 20, //width
+		    height + 43, //height
 		    NULL, 
 		    NULL, 
 		    hInstance, 
@@ -63,9 +84,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   scene.add(make_shared<Sphere>(vec3(0,0,-1), 0.5));
   scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100));
 
-  camera cam = camera(16.0/9.0,400,2.0,1.0,vec3(0,0,0));
+  camera cam = camera(hWindow,aspect_ratio,width,viewport_h,focal_length,vec3(0,0,0));
 
   cam.render(scene);
+
+  while(GetMessage(&msg,NULL,0,0) > 0){ 
+      TranslateMessage(&msg);
+      DispatchMessage(&msg); //send msg to window
+  }
 
 
   return 0;
