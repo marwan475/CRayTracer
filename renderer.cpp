@@ -9,6 +9,8 @@ const char WindowClassName[] = "Window";
 
 camera* camp;
 
+obj_list scene;
+
 LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 {
   switch(msg){
@@ -16,29 +18,30 @@ LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
               {
 
               if ((int)wParam == 87){
-	        printf("W KEY PRESSED\n");
+	        (*camp).move(0);
 	      }
 
 	      if ((int)wParam == 65){
-                printf("A KEY PRESSED\n");
+                (*camp).move(1);
               }
  
 	      if ((int)wParam == 83){
-                printf("S KEY PRESSED\n");
+                (*camp).move(2);
               }
 
 	      if ((int)wParam == 68){
-                printf("D KEY PRESSED\n");
+                (*camp).move(3);
               }
 
 	      if ((int)wParam == 38){
-                printf("UP KEY PRESSED\n");
+                (*camp).move(4);
               }
 
 	      if ((int)wParam == 40){
-                printf("DOWN KEY PRESSED\n");
+                (*camp).move(5);
               }
 
+	      (*camp).render(scene);
 
               break;
               }
@@ -109,13 +112,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   UpdateWindow(hWindow);
 
   // scene creation
-  
-  obj_list scene;
 
-  scene.add(make_shared<Sphere>(vec3(0,0,-1), 0.5));
+  scene.add(make_shared<Sphere>(vec3(-2,0,-1), 0.5));
+  scene.add(make_shared<Sphere>(vec3(2,0,-3), 0.5));
   scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100));
 
   camera cam = camera(hWindow,aspect_ratio,width,viewport_h,focal_length,vec3(0,0,0));
+
+  camp = &cam;
 
   cam.render(scene);
 

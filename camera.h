@@ -35,6 +35,8 @@ class camera {
 
       hWindow = hwnd;
 
+      check = 0;
+
     }
 
     void move(int mvcode)
@@ -78,8 +80,10 @@ class camera {
       
       for ( j = 0; j < height;j++){
         // progress tracker
-        fprintf(stderr,"\rRendering %f percent complete",(double(j)/double(height))*100);
-        fflush(stderr);
+	if (check==0){
+          fprintf(stderr,"\rRendering %f percent complete",(double(j)/double(height))*100);
+          fflush(stderr);
+	}
         for (i = 0; i < width;i++){
 
           // curent pixel
@@ -99,7 +103,7 @@ class camera {
 	  SetPixel(hWdc,i,j,rgb);
        }
      }
-     fprintf(stderr,"\nComplete");
+     check++;
     }
 
     // determines color of pixel that ray hits
@@ -138,6 +142,8 @@ class camera {
 
     // handle to window
     HWND hWindow;
+
+    int check;
 
 };
 
