@@ -37,6 +37,32 @@ class camera {
 
     }
 
+    void move(int mvcode)
+    {
+      switch(mvcode)
+      {
+        case 0: // w
+          ccenter.vec[2]--;
+	  break;
+	case 1: // a
+	  ccenter.vec[0]--;
+	  break;
+	case 2: // s
+          ccenter.vec[2]++;
+	  break;
+        case 3: // d
+	  ccenter.vec[0]++;
+	  break;
+	case 4: // up
+          ccenter.vec[1]++;
+	  break;
+	case 5: // down
+	  ccenter.vec[1]--;
+	  break;
+	      
+      }
+    }
+
 
     void render(obj_list scene)
     {

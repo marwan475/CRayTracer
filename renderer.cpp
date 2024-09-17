@@ -7,6 +7,8 @@
 
 const char WindowClassName[] = "Window"; 
 
+camera* camp;
+
 LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 {
   switch(msg){
