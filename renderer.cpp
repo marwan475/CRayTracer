@@ -10,7 +10,36 @@ const char WindowClassName[] = "Window";
 LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 {
   switch(msg){
-	  
+       case WM_KEYDOWN:
+              {
+
+              if ((int)wParam == 87){
+	        printf("W KEY PRESSED\n");
+	      }
+
+	      if ((int)wParam == 65){
+                printf("A KEY PRESSED\n");
+              }
+ 
+	      if ((int)wParam == 83){
+                printf("S KEY PRESSED\n");
+              }
+
+	      if ((int)wParam == 68){
+                printf("D KEY PRESSED\n");
+              }
+
+	      if ((int)wParam == 38){
+                printf("UP KEY PRESSED\n");
+              }
+
+	      if ((int)wParam == 40){
+                printf("DOWN KEY PRESSED\n");
+              }
+
+
+              break;
+              }
       case WM_CLOSE:
 	      DestroyWindow(hwnd);
 	      break;
@@ -50,7 +79,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     return 0;
   }
 
-  int width = 1000;
+  int width = 400;
   double aspect_ratio = 16.0/9.0;
   double viewport_h = 2.0;
   double focal_length = 1.0;
