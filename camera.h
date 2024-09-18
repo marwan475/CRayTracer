@@ -11,7 +11,7 @@ using std::numeric_limits;
 class camera {
   public:
 
-    camera(HWND hwnd,double ar, int w,double fl,vec3 cc,double fv)
+    camera(HWND hwnd,double ar, int w,double fv)
     {
       width = w;
       aspect_ratio = ar;
@@ -20,21 +20,28 @@ class camera {
 
       fov = fv;
       double theta = degrees_to_radians(fov);
-      double h = std::tan(theta/2);
+      h = std::tan(theta/2);
 
-      viewport_h = 2*h*fl;
+      ccenter = vec3(-2,2,1);
+      look = vec3(0,0,-1);
+      vup = vec3(0,1,0);
+
+      focal_length = subtractVectors(ccenter,look).length();
+
+      viewport_h = 2*h*focal_length;
       viewport_w = viewport_h*(double(width)/double(height));
 
-      focal_length = fl;
-      ccenter = cc;
+      dw = unitVector(subtractVectors(ccenter,look));
+      du = unitVector(crossproduct(vup,dw));
+      dv = crossproduct(dw,du);
  
-      viewport_u = vec3(viewport_w,0,0); // horizontal vector of viewport
-      viewport_v = vec3(0,-viewport_h,0); // negative vertical vector of viewport
+      viewport_u = SmultiVector(viewport_w,du);
+      viewport_v = SmultiVector(viewport_h,SmultiVector(-1,dv)); 
 
       delta_u = SdivideVector(width,viewport_u); // change between pixels horizotanlly
       delta_v = SdivideVector(height,viewport_v);// change between pixels vertically
 
-      vp_upperleft = subtractVectors(subtractVectors(subtractVectors(ccenter,vec3(0,0,focal_length)),SdivideVector(2,viewport_u)),SdivideVector(2,viewport_v));  
+      vp_upperleft = subtractVectors(subtractVectors(subtractVectors(ccenter,SmultiVector(focal_length,dw)),SdivideVector(2,viewport_u)),SdivideVector(2,viewport_v));  
 
       pixel_location = addVectors(vp_upperleft,SmultiVector(0.5,addVectors(delta_u,delta_v)));
 
@@ -138,6 +145,11 @@ class camera {
     vec3 viewport_u; 
     vec3 viewport_v;
     double fov;
+    double h;
+
+    vec3 look;
+    vec3 vup;
+    vec3 du,dv,dw;
 
     // rate of change between pixels
     vec3 delta_u;
