@@ -4,20 +4,25 @@
 #include <limits>
 #include "objects.h"
 #include <windows.h>
+#include "utility.h"
 
 using std::numeric_limits;
 
 class camera {
   public:
 
-    camera(HWND hwnd,double ar, int w,double vh,double fl,vec3 cc)
+    camera(HWND hwnd,double ar, int w,double fl,vec3 cc,double fv)
     {
       width = w;
       aspect_ratio = ar;
       
       height = int(width/aspect_ratio);
 
-      viewport_h = vh;
+      fov = fv;
+      double theta = degrees_to_radians(fov);
+      double h = std::tan(theta/2);
+
+      viewport_h = 2*h*fl;
       viewport_w = viewport_h*(double(width)/double(height));
 
       focal_length = fl;
@@ -36,6 +41,7 @@ class camera {
       hWindow = hwnd;
 
       check = 0;
+
 
     }
 
@@ -131,6 +137,7 @@ class camera {
     vec3 ccenter; // camera center
     vec3 viewport_u; 
     vec3 viewport_v;
+    double fov;
 
     // rate of change between pixels
     vec3 delta_u;

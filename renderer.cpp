@@ -5,6 +5,7 @@
 #include "camera.h"
 #include <windows.h>
 
+
 const char WindowClassName[] = "Window"; 
 
 camera* camp;
@@ -86,8 +87,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
   int width = 400;
   double aspect_ratio = 16.0/9.0;
-  double viewport_h = 2.0;
   double focal_length = 1.0;
+  double fov = 90;
       
   int height = int(width/aspect_ratio);
 
@@ -117,7 +118,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   scene.add(make_shared<Sphere>(vec3(2,0,-3), 0.5));
   scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100));
 
-  camera cam = camera(hWindow,aspect_ratio,width,viewport_h,focal_length,vec3(0,0,0));
+  camera cam = camera(hWindow,aspect_ratio,width,focal_length,vec3(0,0,0),fov);
 
   camp = &cam;
 
