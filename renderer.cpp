@@ -42,6 +42,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
                 (*camp).move(5);
               }
 
+	      if ((int)wParam == 81){
+	        (*camp).move(6);
+	      }
+
+	      if ((int)wParam == 69){
+	        (*camp).move(7);
+	      }
+
 	      (*camp).render(scene);
 
               break;

@@ -22,28 +22,9 @@ class camera {
       double theta = degrees_to_radians(fov);
       h = std::tan(theta/2);
 
-      ccenter = vec3(-2,2,1);
+      ccenter = vec3(0,0,1);
       look = vec3(0,0,-1);
       vup = vec3(0,1,0);
-
-      focal_length = subtractVectors(ccenter,look).length();
-
-      viewport_h = 2*h*focal_length;
-      viewport_w = viewport_h*(double(width)/double(height));
-
-      dw = unitVector(subtractVectors(ccenter,look));
-      du = unitVector(crossproduct(vup,dw));
-      dv = crossproduct(dw,du);
- 
-      viewport_u = SmultiVector(viewport_w,du);
-      viewport_v = SmultiVector(viewport_h,SmultiVector(-1,dv)); 
-
-      delta_u = SdivideVector(width,viewport_u); // change between pixels horizotanlly
-      delta_v = SdivideVector(height,viewport_v);// change between pixels vertically
-
-      vp_upperleft = subtractVectors(subtractVectors(subtractVectors(ccenter,SmultiVector(focal_length,dw)),SdivideVector(2,viewport_u)),SdivideVector(2,viewport_v));  
-
-      pixel_location = addVectors(vp_upperleft,SmultiVector(0.5,addVectors(delta_u,delta_v)));
 
       hWindow = hwnd;
 
@@ -57,13 +38,13 @@ class camera {
       switch(mvcode)
       {
         case 0: // w
-          ccenter.vec[2]--;
+          look.vec[1]++;
 	  break;
 	case 1: // a
 	  ccenter.vec[0]--;
 	  break;
 	case 2: // s
-          ccenter.vec[2]++;
+          look.vec[1]--;
 	  break;
         case 3: // d
 	  ccenter.vec[0]++;
@@ -73,6 +54,12 @@ class camera {
 	  break;
 	case 5: // down
 	  ccenter.vec[1]--;
+	  break;
+	case 6: // down
+	  look.vec[0]--;
+	  break;
+	case 7: // down
+	  look.vec[0]++;
 	  break;
 	      
       }
@@ -90,6 +77,8 @@ class camera {
       COLORREF rgb;
 
       HDC hWdc = GetDC(hWindow);
+
+      calc();
       
       for ( j = 0; j < height;j++){
         // progress tracker
@@ -163,6 +152,28 @@ class camera {
     HWND hWindow;
 
     int check;
+
+    void calc()
+    {
+      focal_length = subtractVectors(ccenter,look).length();
+
+      viewport_h = 2*h*focal_length;
+      viewport_w = viewport_h*(double(width)/double(height));
+
+      dw = unitVector(subtractVectors(ccenter,look));
+      du = unitVector(crossproduct(vup,dw));
+      dv = crossproduct(dw,du);
+ 
+      viewport_u = SmultiVector(viewport_w,du);
+      viewport_v = SmultiVector(viewport_h,SmultiVector(-1,dv)); 
+
+      delta_u = SdivideVector(width,viewport_u); // change between pixels horizotanlly
+      delta_v = SdivideVector(height,viewport_v);// change between pixels vertically
+
+      vp_upperleft = subtractVectors(subtractVectors(subtractVectors(ccenter,SmultiVector(focal_length,dw)),SdivideVector(2,viewport_u)),SdivideVector(2,viewport_v));  
+
+      pixel_location = addVectors(vp_upperleft,SmultiVector(0.5,addVectors(delta_u,delta_v)));
+    }
 
 };
 
