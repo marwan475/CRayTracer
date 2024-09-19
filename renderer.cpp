@@ -50,7 +50,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 	        (*camp).move(7);
 	      }
 
-	      (*camp).render(scene);
+	      if ((int)wParam == 32){
+	        (*camp).render(scene);
+	      }
 
               break;
               }
@@ -97,6 +99,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   double aspect_ratio = 16.0/9.0;
   double fov = 90;
   int samples = 100;
+  int type = 1;
       
   int height = int(width/aspect_ratio);
 
@@ -127,7 +130,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100));
 
   // type = 0  for normal render, type = 1 for antialaising
-  camera cam = camera(hWindow,aspect_ratio,width,fov,samples,1);
+  camera cam = camera(hWindow,aspect_ratio,width,fov,samples,type);
 
   camp = &cam;
 

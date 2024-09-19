@@ -34,8 +34,6 @@ class camera {
 
       hWdc = GetDC(hWindow);
 
-      check = 0;
-
       type = rt;
 
 
@@ -71,6 +69,7 @@ class camera {
 	  break;
 	      
       }
+
     }
 
 
@@ -83,11 +82,6 @@ class camera {
       calc();
       
       for ( j = 0; j < height;j++){
-        // progress tracker
-	if (check==0){
-          fprintf(stderr,"\rRendering %f percent complete",(double(j)/double(height))*100);
-          fflush(stderr);
-	}
         for (i = 0; i < width;i++){
 
 	  if (type == 0){ 
@@ -110,7 +104,6 @@ class camera {
 	  Display(c,i,j);
        }
      }
-     check++;
     }
 
     // gets ray basic
@@ -196,7 +189,6 @@ class camera {
     HWND hWindow;
     HDC hWdc;
 
-    int check;
     int type;
 
     void calc()
