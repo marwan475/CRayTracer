@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include "vec3.h"
 
 const double pi = 3.1415926535897932385;
 
@@ -30,10 +31,37 @@ inline double clamp(double x,double min,double max)
   return x;
 }
 
-vec3 sample_square() 
+inline vec3 sample_square() 
 {
   // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit square.
   return vec3(random_double() - 0.5, random_double() - 0.5, 0);
+}
+
+inline vec3 randVec() 
+{
+  return vec3(random_double(), random_double(), random_double());
+}
+
+inline vec3 randVecMM(double min, double max) 
+{
+  return vec3(random_double(min,max), random_double(min,max), random_double(min,max));
+}
+
+inline vec3 randUvec()
+{
+  while(1){
+    vec3 p = randVecMM(-1,1);
+    double len = p.length()*p.length();
+    if (1e-160 < len && len <= 1) return SdivideVector(sqrt(len),p);
+  } 
+}
+
+inline vec3 randHem(vec3 norm)
+{
+  vec3 on = randUvec();
+
+  if (dot(on,norm)> 0.0) return on;
+  else return SmultiVector(-1,on);
 }
 
 #endif

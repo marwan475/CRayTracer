@@ -93,8 +93,8 @@ class camera {
 
 	  if (type == 1){
 	    for (int s = 0; s < samples; s++){
-	      ray r = get_rayAA(i,j);
-	      c = addVectors(c,ray_color(r,scene));
+	      ray r = get_rayMAX(i,j);
+	      c = addVectors(c,ray_colorMAX(r,scene));
 
 	    }
 	    c = SmultiVector(sample_scale,c);
@@ -118,8 +118,8 @@ class camera {
       return ray(ccenter,ray_direction);
     }
 
-    // gets the ray of position [i,j] with antialiasing
-    ray get_rayAA(int i,int j)
+    // gets the ray of position [i,j] with MAX quality
+    ray get_rayMAX(int i,int j)
     {
       vec3 offset = sample_square();
       
@@ -140,6 +140,22 @@ class camera {
   
 
       // Ray hit background	
+      vec3 ud = unitVector(r.dir());
+      double n = 0.7*(ud.y() + 1.0);
+      return addVectors(SmultiVector(1.0-n,vec3(1.0,1.0,1.0)),SmultiVector(n,vec3(1.0,0.7,0.5)));
+    }
+
+    // determines color of pixel that ray hits MAX Quality
+    vec3 ray_colorMAX(ray r,obj_list scene)
+    {
+      obj_record rec;
+      if (scene.contact(r,0,numeric_limits<double>::infinity(),&rec)){
+        vec3 dir = randHem(rec.normalV);
+	return SmultiVector(0.5,ray_colorMAX(ray(rec.point,dir),scene));
+      }
+
+
+      // Ray hit background
       vec3 ud = unitVector(r.dir());
       double n = 0.7*(ud.y() + 1.0);
       return addVectors(SmultiVector(1.0-n,vec3(1.0,1.0,1.0)),SmultiVector(n,vec3(1.0,0.7,0.5)));
