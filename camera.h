@@ -11,7 +11,7 @@ using std::numeric_limits;
 class camera {
   public:
 
-    camera(HWND hwnd,double ar, int w,double fv)
+    camera(HWND hwnd,double ar, int w,double fv,int samp,int rt)
     {
       width = w;
       aspect_ratio = ar;
@@ -26,7 +26,7 @@ class camera {
       look = vec3(0,0,-1);
       vup = vec3(0,1,0);
 
-      samples = 10;
+      samples = samp;
 
       sample_scale = 1.0/samples;
 
@@ -35,6 +35,8 @@ class camera {
       hWdc = GetDC(hWindow);
 
       check = 0;
+
+      type = rt;
 
 
     }
@@ -76,7 +78,7 @@ class camera {
     {
       int i;
       int j;      
-      vec3 c;
+      vec3 c = vec3(0,0,0);
 
       calc();
       
@@ -88,10 +90,21 @@ class camera {
 	}
         for (i = 0; i < width;i++){
 
-          ray r = get_ray(i,j);
+	  if (type == 0){ 
+	    ray r = get_ray(i,j);
 
-          // color from current ray
-          c = ray_color(r,scene);
+            // color from current ray
+            c = ray_color(r,scene);
+	  }
+
+	  if (type == 1){
+	    for (int s = 0; s < samples; s++){
+	      ray r = get_rayAA(i,j);
+	      c = addVectors(c,ray_color(r,scene));
+
+	    }
+	    c = SmultiVector(sample_scale,c);
+	  }
 
 	  // displaying pixel
 	  Display(c,i,j);
@@ -184,6 +197,7 @@ class camera {
     HDC hWdc;
 
     int check;
+    int type;
 
     void calc()
     {
