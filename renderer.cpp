@@ -100,6 +100,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   double fov = 90;
   int samples = 100;
   int type = 1;
+  int max_depth = 50;
       
   int height = int(width/aspect_ratio);
 
@@ -130,7 +131,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100));
 
   // type = 0  for normal render, type = 1 for antialaising
-  camera cam = camera(hWindow,aspect_ratio,width,fov,samples,type);
+  camera cam = camera(hWindow,aspect_ratio,width,fov,samples,type,max_depth);
 
   camp = &cam;
 

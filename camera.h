@@ -11,7 +11,7 @@ using std::numeric_limits;
 class camera {
   public:
 
-    camera(HWND hwnd,double ar, int w,double fv,int samp,int rt)
+    camera(HWND hwnd,double ar, int w,double fv,int samp,int tt,int depth)
     {
       width = w;
       aspect_ratio = ar;
@@ -34,7 +34,9 @@ class camera {
 
       hWdc = GetDC(hWindow);
 
-      type = rt;
+      type = tt;
+
+      max_depth = depth;
 
 
     }
@@ -94,7 +96,7 @@ class camera {
 	  if (type == 1){
 	    for (int s = 0; s < samples; s++){
 	      ray r = get_rayMAX(i,j);
-	      c = addVectors(c,ray_colorMAX(r,scene));
+	      c = addVectors(c,ray_colorMAX(r,scene,max_depth));
 
 	    }
 	    c = SmultiVector(sample_scale,c);
@@ -146,12 +148,14 @@ class camera {
     }
 
     // determines color of pixel that ray hits MAX Quality
-    vec3 ray_colorMAX(ray r,obj_list scene)
+    vec3 ray_colorMAX(ray r,obj_list scene,int depth)
     {
+      if (depth <=0) return vec3(0,0,0);
+
       obj_record rec;
       if (scene.contact(r,0,numeric_limits<double>::infinity(),&rec)){
         vec3 dir = randHem(rec.normalV);
-	return SmultiVector(0.5,ray_colorMAX(ray(rec.point,dir),scene));
+	return SmultiVector(0.5,ray_colorMAX(ray(rec.point,dir),scene,depth-1));
       }
 
 
@@ -188,6 +192,7 @@ class camera {
     double h;
     int samples;
     double sample_scale;
+    int max_depth;
 
     vec3 look;
     vec3 vup;
