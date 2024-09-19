@@ -22,8 +22,8 @@ class camera {
       double theta = degrees_to_radians(fov);
       h = std::tan(theta/2);
 
-      ccenter = vec3(0,0,0.5);
-      look = vec3(0,0,-1);
+      ccenter = vec3(0,0,3);
+      look = vec3(0,0,0);
       vup = vec3(0,1,0);
 
       samples = samp;

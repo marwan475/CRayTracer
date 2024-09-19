@@ -78,6 +78,42 @@ LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
   return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+void s()
+{
+  for (int i = -5; i < 5;i++){
+    for (int j = -5; j < 5;j++){
+      double m = random_double();
+      vec3 c = vec3(i+0.9*random_double(),0.2,j+0.9*random_double());
+
+      if ((subtractVectors(c,vec3(4,0.2,0))).length() > 0.9){
+        
+        if (m < 0.8){
+	  vec3 a = multiVectors(randVec(),randVec()); 
+	  scene.add(make_shared<Sphere>(c,0.2,make_shared<matte>(a)));
+	}else if (m < 0.95){
+	  vec3 a = randVecMM(0.5,1);
+	  scene.add(make_shared<Sphere>(c,0.2,make_shared<metal>(a)));
+	}else {
+	  scene.add(make_shared<Sphere>(c,0.2,make_shared<glass>(1.5)));
+	}
+      }
+    }
+  }
+  
+  // sphere matte
+  scene.add(make_shared<Sphere>(vec3(-4,1,0), 1.0,make_shared<matte>(vec3(0.4,0.2,0.1))));
+
+  // sphere metal
+  scene.add(make_shared<Sphere>(vec3(4,1,0), 1.0,make_shared<metal>(vec3(0.7,0.6,0.5))));
+
+  // sphere glass
+  scene.add(make_shared<Sphere>(vec3(0,1,0),1.0,make_shared<glass>(1.50)));
+
+  // ground sphere
+  scene.add(make_shared<Sphere>(vec3(0,-1000,0), 1000,make_shared<matte>(vec3(0.5,0.5,0.5))));
+ 
+}
+
 // main function for renderer
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -105,7 +141,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
   int width = 400;
   double aspect_ratio = 16.0/9.0;
-  double fov = 90;
+  double fov = 20;
   int samples = 100;
   int type = 0;
   int max_depth = 50;
@@ -133,20 +169,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   UpdateWindow(hWindow);
 
   // scene creation
-
-  // left sphere matte
-  scene.add(make_shared<Sphere>(vec3(-2,0,-1), 0.5,make_shared<matte>(vec3(0.8,0.6,0.2))));
-
-  // right sphere metal
-  scene.add(make_shared<Sphere>(vec3(2,0,-3), 0.5,make_shared<metal>(vec3(0.8,0.8,0.8))));
-
-  // middle sphere glass
-  scene.add(make_shared<Sphere>(vec3(0,0,-2),0.4,make_shared<glass>(1.00/1.50)));
-
-  // ground sphere
-  scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100,make_shared<matte>(vec3(0.8,0.8,0.0))));
-
-  // type = 0  for normal render, type = 1 for antialaising
+  s();
+  
+  // type = 0  for LOW, type = 1 for MAX
   camera cam = camera(hWindow,aspect_ratio,width,fov,samples,type,max_depth);
 
   camp = &cam;
