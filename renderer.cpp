@@ -107,7 +107,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   double aspect_ratio = 16.0/9.0;
   double fov = 90;
   int samples = 100;
-  int type = 1;
+  int type = 0;
   int max_depth = 50;
       
   int height = int(width/aspect_ratio);
