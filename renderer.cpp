@@ -54,6 +54,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 	        (*camp).render(scene);
 	      }
 
+	      if ((int)wParam == 39){
+	        (*camp).change(1);
+	      }
+
+	      if ((int)wParam == 37){
+	        (*camp).change(0);
+	      }
+
               break;
               }
       case WM_CLOSE:

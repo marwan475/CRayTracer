@@ -180,6 +180,12 @@ class camera {
       SetPixel(hWdc,i,j,rgb);
     }
 
+    // changes render type MAX graphics or LOW
+    void change(int t)
+    {
+      type = t;
+    }
+
   private:
     double aspect_ratio;
     int width;
