@@ -26,6 +26,10 @@ class camera {
       look = vec3(0,0,-1);
       vup = vec3(0,1,0);
 
+      samples = 10;
+
+      sample_scale = 1.0/samples;
+
       hWindow = hwnd;
 
       check = 0;
@@ -98,14 +102,28 @@ class camera {
 
           // color from current ray
           c = ray_color(r,scene);
-	  c = SmultiVector(255,c);
 
-          //rgb values of each pixel in ppm format
-          rgb = RGB(c.x(),c.y(),c.z());
+	  // displaying pixel
+	  int rb = int(255 * clamp(c.x(),0.0000,0.9999));
+	  int gb = int(255 * clamp(c.y(),0.0000,0.9999));
+	  int bb = int(255 * clamp(c.z(),0.0000,0.9999));
+
+          rgb = RGB(rb,gb,bb);
 	  SetPixel(hWdc,i,j,rgb);
        }
      }
      check++;
+    }
+
+    ray get_ray(int i,int j)
+    {
+      vec3 offset = sample_square();
+      
+      vec3 pixel_sample = addVectors(pixel_location,addVectors(SmultiVectors(i+offset.x(),delta_u),Smultivector(j+offset.y(),delta_v)));
+      
+      vec3 ray_dir = subtractVectors(pixel_sample,ccenter);
+      
+      return ray(ccenter,ray_dir);      
     }
 
     // determines color of pixel that ray hits
@@ -135,6 +153,8 @@ class camera {
     vec3 viewport_v;
     double fov;
     double h;
+    int samples;
+    double sample_scale;
 
     vec3 look;
     vec3 vup;
