@@ -107,9 +107,16 @@ class glass : public material {
       else rid = refraction_i;
 
       vec3 ud = unitVector(r_in.dir());
-      vec3 ref = refract(ud,rec.normalV,rid);
+      double cos = std::fmin(dot(SmultiVector(-1.0,ud),rec.normalV),1.0);
+      double sin = std::sqrt(1.0 - cos*cos);
 
-      *scat = ray(rec.point,ref);
+      bool cref = rid * sin > 1.0;
+      vec3 direction;
+
+      if (cref || reflectance(cos,rid) > random_double()) direction = reflect(ud,rec.normalV);
+      else direction = refract(ud,rec.normalV,rid);
+
+      *scat = ray(rec.point,direction);
       return true;
     }
 

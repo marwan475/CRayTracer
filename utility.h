@@ -76,4 +76,13 @@ inline bool near_zero(vec3 v)
 {
   return (std::fabs(v.x()) < 1e-8) && (std::fabs(v.y()) < 1e-8) && (std::fabs(v.z()) < 1e-8);
 }
+
+inline double reflectance(double cos,double rid)
+{
+  double r0 = (1-rid)/(1+rid);
+  r0 *= r0;
+  return r0 + (1-r0)*std::pow((1-cos),5);
+}
+
+
 #endif

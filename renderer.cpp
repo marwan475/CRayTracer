@@ -134,9 +134,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
   // scene creation
 
+  // left sphere matte
   scene.add(make_shared<Sphere>(vec3(-2,0,-1), 0.5,make_shared<matte>(vec3(0.8,0.6,0.2))));
+
+  // right sphere metal
   scene.add(make_shared<Sphere>(vec3(2,0,-3), 0.5,make_shared<metal>(vec3(0.8,0.8,0.8))));
-  scene.add(make_shared<Sphere>(vec3(0,0,-2),0.5,make_shared<glass>(1.50)));
+
+  // middle sphere glass
+  scene.add(make_shared<Sphere>(vec3(0,0,-2),0.4,make_shared<glass>(1.00/1.50)));
+
+  // ground sphere
   scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100,make_shared<matte>(vec3(0.8,0.8,0.0))));
 
   // type = 0  for normal render, type = 1 for antialaising
