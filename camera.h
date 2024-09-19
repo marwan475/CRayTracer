@@ -153,8 +153,8 @@ class camera {
       if (depth <=0) return vec3(0,0,0);
 
       obj_record rec;
-      if (scene.contact(r,0,numeric_limits<double>::infinity(),&rec)){
-        vec3 dir = randHem(rec.normalV);
+      if (scene.contact(r,0.001,numeric_limits<double>::infinity(),&rec)){
+        vec3 dir = addVectors(rec.normalV,randUvec());
 	return SmultiVector(0.5,ray_colorMAX(ray(rec.point,dir),scene,depth-1));
       }
 
@@ -170,9 +170,11 @@ class camera {
     {
       COLORREF rgb;
 
-      int rb = int(255 * clamp(c.x(),0.0000,0.9999));
-      int gb = int(255 * clamp(c.y(),0.0000,0.9999));
-      int bb = int(255 * clamp(c.z(),0.0000,0.9999));
+      
+
+      int rb = int(255 * clamp(linear_to_gamma(c.x()),0.0000,0.9999));
+      int gb = int(255 * clamp(linear_to_gamma(c.y()),0.0000,0.9999));
+      int bb = int(255 * clamp(linear_to_gamma(c.z()),0.0000,0.9999));
 
       rgb = RGB(rb,gb,bb);
       SetPixel(hWdc,i,j,rgb);

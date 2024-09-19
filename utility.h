@@ -64,4 +64,12 @@ inline vec3 randHem(vec3 norm)
   else return SmultiVector(-1,on);
 }
 
+inline double linear_to_gamma(double linear_component)
+{
+    if (linear_component > 0)
+        return std::sqrt(linear_component);
+
+    return 0;
+}
+
 #endif
