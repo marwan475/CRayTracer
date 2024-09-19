@@ -27,7 +27,7 @@ typedef struct {
 // sets the objects hit loaction record direction of normal vector
 void set_face(ray r,vec3 normal,obj_record *record)
 {
-  record->face = dot(r.dir(),normal);
+  record->face = dot(r.dir(),normal) < 0;
   
   if (record->face) record->normalV = normal;
   else record->normalV = SmultiVector(-1,normal);
@@ -89,6 +89,32 @@ class metal : public material {
 
   private:
     vec3 color;
+};
+
+class glass : public material {
+  public:
+    glass(double ri)
+    {
+      refraction_i = ri;
+    }
+
+    bool matCalc(ray r_in,obj_record rec,vec3* match,ray* scat)const override
+    {
+      *match = vec3(1.0,1.0,1.0);
+      double rid;
+
+      if (rec.face) rid = 1.0/refraction_i;
+      else rid = refraction_i;
+
+      vec3 ud = unitVector(r_in.dir());
+      vec3 ref = refract(ud,rec.normalV,rid);
+
+      *scat = ray(rec.point,ref);
+      return true;
+    }
+
+  private:
+    double refraction_i;
 };
 
 class obj_list : public obj {

@@ -60,3 +60,12 @@ vec3 reflect(vec3 v,vec3 u)
 {
   return subtractVectors(v,SmultiVector(2*dot(v,u),u));
 }
+
+vec3 refract(vec3 uv,vec3 n,double et)
+{
+  double ct = std::fmin(dot(SmultiVector(-1,uv),n),1.0);
+  vec3 r_outpd = SmultiVector(et,addVectors(uv,SmultiVector(ct,n)));
+  vec3 r_outpll = SmultiVector(-std::sqrt(std::fabs(1.0 - r_outpd.length()*r_outpd.length())),n);
+
+  return addVectors(r_outpd,r_outpll);
+}

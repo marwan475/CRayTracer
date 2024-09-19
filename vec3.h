@@ -82,5 +82,6 @@ double dot(vec3 v1,vec3 v2);
 vec3 crossproduct(vec3 v1, vec3 v2);
 vec3 unitVector(vec3 v);
 vec3 reflect(vec3 v,vec3 u);
+vec3 refract(vec3 uv,vec3 n,double et);
 
 #endif
