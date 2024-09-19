@@ -32,6 +32,8 @@ class camera {
 
       hWindow = hwnd;
 
+      hWdc = GetDC(hWindow);
+
       check = 0;
 
 
@@ -74,13 +76,7 @@ class camera {
     {
       int i;
       int j;      
-      vec3 center;
-      vec3 ray_direction;
       vec3 c;
-
-      COLORREF rgb;
-
-      HDC hWdc = GetDC(hWindow);
 
       calc();
       
@@ -92,34 +88,36 @@ class camera {
 	}
         for (i = 0; i < width;i++){
 
-          // curent pixel
-          center = addVectors(pixel_location,addVectors(SmultiVector(i,delta_u),SmultiVector(j,delta_v)));
-          // ray diriciton to the current pixel
-          ray_direction = subtractVectors(center,ccenter);
-
-          // current ray
-          ray r = ray(ccenter,ray_direction);
+          ray r = get_ray(i,j);
 
           // color from current ray
           c = ray_color(r,scene);
 
 	  // displaying pixel
-	  int rb = int(255 * clamp(c.x(),0.0000,0.9999));
-	  int gb = int(255 * clamp(c.y(),0.0000,0.9999));
-	  int bb = int(255 * clamp(c.z(),0.0000,0.9999));
-
-          rgb = RGB(rb,gb,bb);
-	  SetPixel(hWdc,i,j,rgb);
+	  Display(c,i,j);
        }
      }
      check++;
     }
 
+    // gets ray basic
     ray get_ray(int i,int j)
+    {
+      // curent pixel
+      vec3 center = addVectors(pixel_location,addVectors(SmultiVector(i,delta_u),SmultiVector(j,delta_v)));
+      // ray diriciton to the current pixel
+      vec3 ray_direction = subtractVectors(center,ccenter);
+
+      // current ray
+      return ray(ccenter,ray_direction);
+    }
+
+    // gets the ray of position [i,j] with antialiasing
+    ray get_rayAA(int i,int j)
     {
       vec3 offset = sample_square();
       
-      vec3 pixel_sample = addVectors(pixel_location,addVectors(SmultiVectors(i+offset.x(),delta_u),Smultivector(j+offset.y(),delta_v)));
+      vec3 pixel_sample = addVectors(pixel_location,addVectors(SmultiVector(i+offset.x(),delta_u),SmultiVector(j+offset.y(),delta_v)));
       
       vec3 ray_dir = subtractVectors(pixel_sample,ccenter);
       
@@ -139,6 +137,19 @@ class camera {
       vec3 ud = unitVector(r.dir());
       double n = 0.7*(ud.y() + 1.0);
       return addVectors(SmultiVector(1.0-n,vec3(1.0,1.0,1.0)),SmultiVector(n,vec3(1.0,0.7,0.5)));
+    }
+
+    // displays pixel
+    void Display(vec3 c,int i,int j)
+    {
+      COLORREF rgb;
+
+      int rb = int(255 * clamp(c.x(),0.0000,0.9999));
+      int gb = int(255 * clamp(c.y(),0.0000,0.9999));
+      int bb = int(255 * clamp(c.z(),0.0000,0.9999));
+
+      rgb = RGB(rb,gb,bb);
+      SetPixel(hWdc,i,j,rgb);
     }
 
   private:
@@ -170,6 +181,7 @@ class camera {
 
     // handle to window
     HWND hWindow;
+    HDC hWdc;
 
     int check;
 
