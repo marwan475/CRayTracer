@@ -3,6 +3,7 @@
 
 #include "vec3.h"
 #include "ray.h"
+#include "utility.h"
 
 #include <vector>
 #include <memory>
@@ -11,12 +12,15 @@ using std::make_shared;
 using std::shared_ptr;
 using std::vector;
 
+class material;
+
 typedef struct {
   
   vec3 point;
   vec3 normalV;
   double t;
   bool face;
+  shared_ptr<material> mat;
 
 } obj_record;
 
@@ -34,6 +38,57 @@ class obj {
     virtual ~obj() = default;
 
     virtual bool contact(ray r,double tmin,double tmax,obj_record *record) const = 0;
+};
+
+class material {
+  public:
+    virtual ~material() = default;
+
+    virtual bool matCalc(ray r_in,obj_record rec,vec3* match, ray* scat) const
+    {
+      return false;
+    }
+};
+
+class matte : public material {
+  public:
+    matte(vec3 c)
+    {
+      color = c;
+    }
+    
+    bool matCalc(ray r_in,obj_record rec,vec3* match,ray* scat) const override
+    {
+      vec3 dir = addVectors(rec.normalV,randUvec());
+
+      if (near_zero(dir)) dir = rec.normalV;
+
+      *scat = ray(rec.point,dir);
+      *match = color;
+      return true;
+    }
+
+  private:
+    vec3 color;
+};
+
+class metal : public material {
+  public:
+    metal(vec3 c)
+    {
+      color = c;
+    }
+
+    bool matCalc(ray r_in,obj_record rec,vec3* match,ray* scat)const override
+    {
+      vec3 ref = reflect(r_in.dir(),rec.normalV);
+      *scat = ray(rec.point,ref);
+      *match = color;
+      return true;
+    }
+
+  private:
+    vec3 color;
 };
 
 class obj_list : public obj {
@@ -64,12 +119,12 @@ class obj_list : public obj {
     }
 };
 
-class Sphere : public obj {
-  public:
-    Sphere(vec3 cent, double rad)
+class Sphere : public obj { public:
+    Sphere(vec3 cent, double rad,shared_ptr<material> m)
     {
       Scenter = cent;
       radius = rad;
+      mat = m;
     }
 
     bool contact(ray r, double tmin, double tmax,obj_record *record) const override
@@ -94,12 +149,14 @@ class Sphere : public obj {
       record->point = r.get(rt);
       vec3 normal = SdivideVector(radius,subtractVectors(record->point,Scenter));
       set_face(r,normal,record);
+      record->mat = mat;
 
       return true;
     }
   private:
     vec3 Scenter;
     double radius;
+    shared_ptr<material> mat;
 };
 
 #endif

@@ -22,7 +22,7 @@ class camera {
       double theta = degrees_to_radians(fov);
       h = std::tan(theta/2);
 
-      ccenter = vec3(0,0,1);
+      ccenter = vec3(0,0,0.5);
       look = vec3(0,0,-1);
       vup = vec3(0,1,0);
 
@@ -154,8 +154,12 @@ class camera {
 
       obj_record rec;
       if (scene.contact(r,0.001,numeric_limits<double>::infinity(),&rec)){
-        vec3 dir = addVectors(rec.normalV,randUvec());
-	return SmultiVector(0.5,ray_colorMAX(ray(rec.point,dir),scene,depth-1));
+        ray scat = ray(vec3(0,0,0),vec3(0,0,0));
+	vec3 match;
+	if (rec.mat->matCalc(r,rec,&match,&scat)){
+	  return multiVectors(match,ray_colorMAX(scat,scene,depth-11));
+	}
+	return vec3(0,0,0);
       }
 
 
@@ -168,9 +172,7 @@ class camera {
     // displays pixel
     void Display(vec3 c,int i,int j)
     {
-      COLORREF rgb;
-
-      
+      COLORREF rgb;      
 
       int rb = int(255 * clamp(linear_to_gamma(c.x()),0.0000,0.9999));
       int gb = int(255 * clamp(linear_to_gamma(c.y()),0.0000,0.9999));

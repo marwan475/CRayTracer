@@ -5,7 +5,7 @@
 
 class ray {
   public:
-    ray(vec3& origin,vec3& direction)
+    ray(vec3 origin,vec3 direction)
     {
       orig = SmultiVector(1,origin);
       dire = SmultiVector(1,direction);

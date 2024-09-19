@@ -72,4 +72,8 @@ inline double linear_to_gamma(double linear_component)
     return 0;
 }
 
+inline bool near_zero(vec3 v) 
+{
+  return (std::fabs(v.x()) < 1e-8) && (std::fabs(v.y()) < 1e-8) && (std::fabs(v.z()) < 1e-8);
+}
 #endif

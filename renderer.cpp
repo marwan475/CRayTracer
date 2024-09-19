@@ -115,7 +115,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   HWND hWindow = CreateWindowEx(
 		    WS_EX_CLIENTEDGE, 
 		    WindowClassName, // name of our window class
-		    "test", // title for our window
+		    "Ray Tracer", // title for our window
 		    WS_OVERLAPPEDWINDOW, 
 		    CW_USEDEFAULT, // X cord of window
 		    CW_USEDEFAULT, // Y cor dof window
@@ -134,9 +134,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
   // scene creation
 
-  scene.add(make_shared<Sphere>(vec3(-2,0,-1), 0.5));
-  scene.add(make_shared<Sphere>(vec3(2,0,-3), 0.5));
-  scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100));
+  scene.add(make_shared<Sphere>(vec3(-2,0,-1), 0.5,make_shared<matte>(vec3(0.8,0.6,0.2))));
+  scene.add(make_shared<Sphere>(vec3(2,0,-3), 0.5,make_shared<metal>(vec3(0.8,0.8,0.8))));
+  scene.add(make_shared<Sphere>(vec3(0,-100.5,-1), 100,make_shared<matte>(vec3(0.8,0.8,0.0))));
 
   // type = 0  for normal render, type = 1 for antialaising
   camera cam = camera(hWindow,aspect_ratio,width,fov,samples,type,max_depth);

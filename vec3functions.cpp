@@ -55,3 +55,8 @@ vec3 unitVector(vec3 v)
 {
   return SdivideVector(v.length(),v);
 }
+
+vec3 reflect(vec3 v,vec3 u)
+{
+  return subtractVectors(v,SmultiVector(2*dot(v,u),u));
+}

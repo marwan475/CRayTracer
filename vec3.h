@@ -81,5 +81,6 @@ vec3 SdivideVector(double s,vec3 v);
 double dot(vec3 v1,vec3 v2);
 vec3 crossproduct(vec3 v1, vec3 v2);
 vec3 unitVector(vec3 v);
+vec3 reflect(vec3 v,vec3 u);
 
 #endif
