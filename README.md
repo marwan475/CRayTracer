@@ -13,3 +13,17 @@ Current design:
 - color of the pixel is determined based on the normal vector of the ray and object
 
 - if no object is hit the color of the pixel is based on the background
+
+## Showcase
+
+### Pre-rendered image
+
+![alt text](https://github.com/marwan475/CRayTracer/blob/main/Raytracer%20images/Screenshot%202024-09-24%20205903.png?raw=true)
+
+### Pre-rendered image after moving the camera
+
+![alt text](https://github.com/marwan475/CRayTracer/blob/main/Raytracer%20images/Screenshot%202024-09-24%20205820.png?raw=true)
+
+### Rendered image with pixel sample size of 100
+
+![alt text](https://github.com/marwan475/CRayTracer/blob/main/Raytracer%20images/Screenshot%202024-09-24%20205750.png?raw=true)
