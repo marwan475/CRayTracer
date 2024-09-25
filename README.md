@@ -1,8 +1,6 @@
 # CRayTracer
 Semi-real-time Ray tracer written in C++, only using base C libraries and Win32API for displaying to screen and keyboard input
 
-3D vector source: https://www.nagwa.com/en/explainers/653193529121/
-
 ## Features
 
 - adding spheres to the scene
