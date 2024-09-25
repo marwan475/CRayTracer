@@ -80,16 +80,16 @@ LRESULT CALLBACK WindowProc(HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam)
 
 void s()
 {
-  for (int i = -5; i < 5;i++){
-    for (int j = -5; j < 5;j++){
+  for (int i = -7; i < 7;i++){
+    for (int j = -7; j < 7;j++){
       double m = random_double();
-      vec3 c = vec3(i+0.9*random_double(),0.2,j+0.9*random_double());
+      vec3 c = vec3(i+random_double(),random_double(),j+random_double());
 
       if ((subtractVectors(c,vec3(4,0.2,0))).length() > 0.9){
         
         if (m < 0.8){
 	  vec3 a = multiVectors(randVec(),randVec()); 
-	  scene.add(make_shared<Sphere>(c,0.2,make_shared<matte>(a)));
+	  scene.add(make_shared<Sphere>(c,0.3,make_shared<matte>(a)));
 	}else if (m < 0.95){
 	  vec3 a = randVecMM(0.5,1);
 	  scene.add(make_shared<Sphere>(c,0.2,make_shared<metal>(a)));
@@ -101,13 +101,13 @@ void s()
   }
   
   // sphere matte
-  scene.add(make_shared<Sphere>(vec3(-4,1,0), 1.0,make_shared<matte>(vec3(0.4,0.2,0.1))));
+  scene.add(make_shared<Sphere>(vec3(-4,1,3), 1.0,make_shared<matte>(vec3(0.4,0.2,0.1))));
 
   // sphere metal
-  scene.add(make_shared<Sphere>(vec3(4,1,0), 1.0,make_shared<metal>(vec3(0.7,0.6,0.5))));
+  scene.add(make_shared<Sphere>(vec3(4,1,-3), 1.0,make_shared<metal>(vec3(0.7,0.6,0.5))));
 
   // sphere glass
-  scene.add(make_shared<Sphere>(vec3(0,1,0),1.0,make_shared<glass>(1.50)));
+  scene.add(make_shared<Sphere>(vec3(0,3,0),1.0,make_shared<glass>(1.50)));
 
   // ground sphere
   scene.add(make_shared<Sphere>(vec3(0,-1000,0), 1000,make_shared<matte>(vec3(0.5,0.5,0.5))));
@@ -139,9 +139,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     return 0;
   }
 
-  int width = 400;
+  int width = 500;
   double aspect_ratio = 16.0/9.0;
-  double fov = 20;
+  double fov = 45;
   int samples = 100;
   int type = 0;
   int max_depth = 50;
