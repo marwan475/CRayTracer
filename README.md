@@ -14,6 +14,27 @@ Semi-real-time Ray tracer written in C++, only using base C libraries and Win32A
 - moveable camera using keyboard inputs
 - render in low-quality mode or high-quality mode
 
+## How to run
+- ENV = Windows
+- Compiler = g++ on msys2 MINGW64
+- run make
+- ./renderer
+
+## Controls
+- space = re-render
+- d move camera x position by 1
+- a move camera x position by -1
+- w move camera y lookat by 1
+- s move camera y lookat by -1
+- e move camera x lookat by 1
+- q move camera x lookat by -1
+- arrow up move camera y position by 1
+- arrow down move camera y position by -1
+- right arrow activates high graphics mode
+- left arrow activates low graphics mode
+
+*note after moving the camera position or changing mode press the space bar to re-render the image with the new settings
+
 ## Current design:
 - camera casts ray on each pixel in the viewport
 
