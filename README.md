@@ -30,6 +30,7 @@ Semi-real-time Ray tracer written in C++, only using base C libraries and Win32A
   - Multithreaded rendering
   - GPU hardware acceleration using OpenCL
 - Light sources
+- Code documentation
 
 ## Settings
 
