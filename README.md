@@ -1,11 +1,22 @@
 # CRayTracer
-Raytracer written in C++ to learn computer graphics
-
-ppm file format source: https://netpbm.sourceforge.net/doc/ppm.html
+Semi-real-time Ray tracer written in C++, only using base C libraries and Win32API for displaying to screen and keyboard input
 
 3D vector source: https://www.nagwa.com/en/explainers/653193529121/
 
-Current design:
+## Features
+
+- adding spheres to the scene
+  - give location in 3d space
+  - radius
+  - material
+- 3 different materials for spheres
+  - matte
+  - metal
+  - glass
+- moveable camera using keyboard inputs
+- render in low-quality mode or high-quality mode
+
+## Current design:
 - camera casts ray on each pixel in the viewport
 
 - ray is checked to see if it has made contact with any objects
@@ -13,6 +24,27 @@ Current design:
 - color of the pixel is determined based on the normal vector of the ray and object
 
 - if no object is hit the color of the pixel is based on the background
+
+## Future additions
+- adding Quads instead of only spheres
+- improving/optimizing the speed of rendering
+  - Bounding Volume Hierarchies
+  - Multithreaded rendering
+  - GPU hardware acceleration using OpenCL
+- Light sources
+
+## Settings
+
+### Camera
+- FOV
+- Starting position
+  
+### Image
+- width
+- aspect ratio
+- pixel sample size
+
+*note (higher value for width and pixel sample size = higher quality image but also slower rendering time)
 
 ## Showcase
 
